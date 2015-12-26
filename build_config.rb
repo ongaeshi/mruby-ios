@@ -136,3 +136,22 @@ end
 #   conf.test_runner.command = 'env'
 #
 # end
+
+MRuby::CrossBuild.new('ios') do |conf|
+  toolchain :clang
+
+  SDK_PATH = "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk"
+  ARCH = "-arch arm64 -arch armv7 -arch armv7s"
+
+  conf.cc.flags << "#{ARCH}"
+  conf.cc.include_paths << "#{SDK_PATH}/usr/include"
+  conf.linker.flags << "#{ARCH}"
+  conf.linker.library_paths << "#{SDK_PATH}/usr/lib"
+
+  conf.bins = []
+
+  # conf.gembox 'default'
+  conf.gem :core => "mruby-print"
+  conf.gem :core => "mruby-math"
+  conf.gem :core => "mruby-enum-ext"
+end
